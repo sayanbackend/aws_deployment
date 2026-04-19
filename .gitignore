@@ -1,0 +1,10 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Lambda zip
+terraform/lambda.zip
+
+# Mac
+.DS_Store
