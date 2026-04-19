@@ -24,11 +24,17 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_policy" {
 resource "aws_lambda_function" "hello_lambda" {
   function_name = "hello-lambda"
 
-  filename         = "${path.module}/lambda.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda.zip")
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
-  handler = "lambda_function.lambda_handler"
+  handler = "app.lambda_handler"
   runtime = "python3.11"
 
   role = aws_iam_role.lambda_role.arn
+}
+
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../src/hello_lambda"
+  output_path = "${path.module}/lambda.zip"
 }
