@@ -33,6 +33,15 @@ resource "aws_lambda_function" "hello_lambda" {
   role = aws_iam_role.lambda_role.arn
 }
 
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = "dev-deploy-bucket-1"
+
+  tags = {
+    Name        = "lambda-deploy-bucket"
+    Environment = "dev"
+  }
+}
+
 data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir  = "${path.module}/../src/hello_lambda"
